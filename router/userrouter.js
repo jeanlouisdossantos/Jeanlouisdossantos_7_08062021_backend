@@ -6,7 +6,7 @@ const auth = require("../middleware/auth")
 /**
  * @swagger
  * paths:
- *  /user:
+ *  /api/user:
  *    get:
  *      summary: Get all users
  *      responses:
@@ -23,7 +23,7 @@ router.get("/",usercontrol.getAllUser)
 /**
  * @swagger
  * paths:
- *   /user/signin:
+ *   /api/user/signin:
  *     post:
  *       summary: Signin one user
  *       requestBody:
@@ -43,7 +43,7 @@ router.post("/signin" , usercontrol.signIn)
 /**
  * @swagger
  * paths:
- *   /user/login:
+ *   /api/user/login:
  *     post:
  *       summary: Login one user
  *       requestBody:
@@ -70,15 +70,24 @@ router.post("/login", usercontrol.login)
 /**
  * @swagger
  * paths:
- *   /user/refresh:
+ *   /api/user/refresh:
  *     post:
  *       summary: refresh token
+ *       requestBody:
+ *         required: true 
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 id :
+ *                   type: integer 
+ *                   example : 2
  *       responses:
  *         '200':
- *           description: token refressehd
+ *           description: token refreshed
  *         '401':
  *           description: Unauthorized   
  *     
  */
-router.post("/refresh", auth ,  usercontrol.refreshToken)
+router.post("/refresh", usercontrol.refreshToken)
 module.exports = router

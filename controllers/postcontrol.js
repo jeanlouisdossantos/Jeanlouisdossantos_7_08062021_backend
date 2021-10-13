@@ -8,13 +8,18 @@ exports.getAllPosts = (req, res, next) => {
   Post.hasMany(comment, { foreignKey: "post_id" });
   Post.hasMany(like, { foreignKey: "postid" });
   Post.belongsTo(user, { foreignKey: "user_id" });
+  comment.belongsTo(user, { foreignKey: "user_id" })
 
-  Post.findAll({ include: [{ model: like, attributes: ["type"] }] }
+  Post.findAll({ include: [{ model: like, attributes: ["type"]},
+  {model:comment, include :[ { model: user, attributes : [[sequelize.fn("CONCAT",sequelize.col('name')," ",sequelize.col('firstname')),"user"],] }
+]
+}
+] 
+}
   )
-    .then((posts) => {
-      res.status(200).json(posts);
+    .then((posts) => {res.status(200).json(posts);
     })
-    .catch((error) => res.status(400).json(error));
+    .catch((error) => {res.status(400).json(error)});
 };
 
 exports.getOnePost = (req, res, next) => {
@@ -28,12 +33,17 @@ exports.getOnePost = (req, res, next) => {
 
   Post.findAll({
     where: { postid: req.params.id },
-    include: [
-      { model: like, attributes: ["type"] },
-      { model: user, attributes : [[sequelize.fn("CONCAT",sequelize.col('name')," ",sequelize.col('firstname')),"user"]] },
-      { model: comment },
-    ],
-  })
+    
+    include:[ 
+    { model: like,  attributes: ["userid","type"]},
+      { model: user, attributes : [[sequelize.fn("CONCAT",sequelize.col('name')," ",sequelize.col('firstname')),"user"],] }
+    // { model: like,  where : {type :"dislike"}, attributes: ["userid"]}
+  ],
+      
+     // ,
+     // { model: comment }]
+
+    })
     .then(post => {
       console.log(post)
       res.status(200).json(post)})
@@ -48,14 +58,17 @@ exports.createOnePost = (req, res, next) => {
   }
 
   const post = req.body;
-  post.created_at = DATE.now();
-  post.imageurl = `${req.protocol}://${req.get("host")}/img/${
+  post.created_at = new Date(Date.now());
+  if(post.file === null){ post.imageurl = ""} else { post.imageurl = `${req.protocol}://${req.get("host")}/img/${
     req.file.filename
-  }`;
+  }`};
+  post.user_id = res.locals.userID
+
+  console.log(post)
 
   Post.create(post)
-    .then(res.status(201).json({ message: "created successfully" }))
-    .catch(() => res.status(400).json({ error: "sommething went wrong" }));
+    .then(() => res.status(201).json({ message: "created successfully" }))
+    .catch(error => {res.status(400).json(error)});
 };
 
 exports.updateOnePost = (req, res, next) => {
@@ -74,3 +87,19 @@ exports.deleteOnePost = (req, res, next) => {
     .then(() => res.status(200).json({ message: "post deleted succesfuly" }))
     .catch((error) => res.status(500).json(error));
 };
+exports.createOneComment = (req,res,next) => {
+
+  const commentToCreate = req.body;
+  commentToCreate.created_at = new Date(Date.now());
+  commentToCreate.user_id = res.locals.userID
+
+  comment.create(commentToCreate)
+  .then(response => {
+    console.log(response)
+    res.status(201).json({ message: "created successfully" })})
+  .catch(
+    (error) => {
+      console.log(error)
+      res.status(400).json({ error: "sommething went wrong" })}
+  )}
+  

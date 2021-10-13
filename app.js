@@ -87,7 +87,7 @@ app.get(
 const userrouter = require("./router/userrouter");
 const postrouter = require("./router/postrouter.js");
 
-app.use("/user", userrouter);
-app.use("/post", postrouter);
+app.use("/api/user", userrouter);
+app.use("/api/post", postrouter);
 
 module.exports = app;

@@ -9,7 +9,7 @@ const auth = require("../middleware/auth")
 /**
  * @swagger
  * paths:
- *   /post/:
+ *   /api/post/:
  *     get:
  *       summary: get all post
  *       responses:
@@ -24,7 +24,7 @@ router.get("/", postcontrol.getAllPosts)
 /**
  * @swagger
  * paths:
- *   /post/{id}:
+ *   /api/post/{id}:
  *     get:
  *       summary: get all post
  *       parameters:
@@ -43,7 +43,8 @@ router.get("/", postcontrol.getAllPosts)
  *     
  */
 router.get("/:id",postcontrol.getOnePost)
-router.post("/",auth, multer, postcontrol.createOnePost)
+router.post("/", auth, multer, postcontrol.createOnePost)
+router.post("/comment", auth,postcontrol.createOneComment)
 router.put("/:id",auth, multer, postcontrol.updateOnePost )
 router.delete("/:id", auth, postcontrol.deleteOnePost)
 module.exports = router
