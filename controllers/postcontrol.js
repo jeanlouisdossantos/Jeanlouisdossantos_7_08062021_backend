@@ -45,21 +45,21 @@ exports.getOnePost = (req, res, next) => {
 
     })
     .then(post => {
-      console.log(post)
+      
       res.status(200).json(post)})
     .catch((error) => {
-      console.log(error)
       res.status(400).json(error)});
 };
 
 exports.createOnePost = (req, res, next) => {
+  console.log(req.body)
   if (!req.body) {
-    return res.status(400).json({ error: "bad request" });
+    return res.status(400).json({ error: "bad request, no req.body" });
   }
 
   const post = req.body;
   post.created_at = new Date(Date.now());
-  if(post.file === null){ post.imageurl = ""} else { post.imageurl = `${req.protocol}://${req.get("host")}/img/${
+  if(post.file === "null"){ post.imageurl = ""} else { post.imageurl = `${req.protocol}://${req.get("host")}/img/${
     req.file.filename
   }`};
   post.user_id = res.locals.userID

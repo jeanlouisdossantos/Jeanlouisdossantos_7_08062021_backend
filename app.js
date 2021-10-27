@@ -68,6 +68,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+/** to serve images */
+app.use('/img', express.static('img'))
 
 app.use(bodyparser.json());
 
