@@ -85,7 +85,6 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.createOnePost = (req, res, next) => {
-  console.log(req.body);
   if (!req.body) {
     return res.status(400).json({ error: "bad request, no req.body" });
   }
@@ -100,8 +99,6 @@ exports.createOnePost = (req, res, next) => {
     }`;
   }
   post.user_id = res.locals.userID;
-
-  console.log(post);
 
   Post.create(post)
     .then(() => res.status(201).json({ message: "created successfully" }))
@@ -124,10 +121,11 @@ exports.deleteOnePost = (req, res, next) => {
   if (!req.params.id) {
     return res.status(400).json({ error: "bad request" });
   }
-  
-  const authtodelete = Post.findOne({ where: { postid: req.params.id } }).then(
-    (post) =>  post.user_id === res.locals.userID).catch( error => console.log(error));
-  
+
+  const authtodelete = Post.findOne({ where: { postid: req.params.id } })
+    .then((post) => post.user_id === res.locals.userID)
+    .catch((error) => res.status(500).json(error));
+
   if (authtodelete) {
     Post.destroy({ where: { postid: req.params.id } })
       .then(() => res.status(200).json({ message: "post deleted succesfuly" }))
@@ -143,11 +141,9 @@ exports.createOneComment = (req, res, next) => {
   comment
     .create(commentToCreate)
     .then((response) => {
-      console.log(response);
       res.status(201).json({ message: "created successfully" });
     })
     .catch((error) => {
-      console.log(error);
       res.status(400).json({ error: "sommething went wrong" });
     });
 };

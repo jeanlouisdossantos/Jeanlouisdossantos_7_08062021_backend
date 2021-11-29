@@ -3,9 +3,15 @@ const bcrypt = require("bcrypt");
 const cryptojs = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
-exports.getAllUser = (req, res, next) => {
-  User.findAll()
-    .then((users) => res.status(200).json(users))
+exports.getUserDetails = (req, res, next) => {
+  User.findOne({ where: { userid: res.locals.userID } })
+    .then((user) => {
+      console.log(user)
+     delete user.dataValues.email
+     delete user.dataValues.password
+     
+      res.status(200).json(user);
+    })
     .catch((erreur) => res.status(500).json(erreur));
 };
 
@@ -13,13 +19,12 @@ exports.signIn = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
-      const email = cryptojs.AES.encrypt(
-        req.body.email,
-        cryptojs.enc.Hex.parse(process.env.CRYPTO_HEX_KEY),
-        {
-          mode: cryptojs.mode.ECB,
-        }
+      
+            const email = cryptojs.AES.encrypt(
+        req.body.email,cryptojs.enc.Hex.parse(process.env.CRYPTO_HEX_KEY),
+        {mode : cryptojs.mode.ECB}
       ).toString();
+      console.log(email)
       User.create({
         name: req.body.name,
         firstname: req.body.firstname,
@@ -40,18 +45,17 @@ exports.signIn = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+  
   const email = cryptojs.AES.encrypt(
     req.body.email,
     cryptojs.enc.Hex.parse(process.env.CRYPTO_HEX_KEY),
-    {
-      mode: cryptojs.mode.ECB,
-    }
+    {mode : cryptojs.mode.ECB}
   ).toString();
-
+  console.log(email);
   User.findOne({ where: { email: email } })
     .then((user) => {
       if (!user) {
-        return res.status(500).json({ error: "login incorrect" });
+        return res.status(500).json({ error: "login incorrect", email: email });
       }
       bcrypt
         .compare(req.body.password, user.password)

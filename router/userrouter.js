@@ -18,7 +18,7 @@ const auth = require("../middleware/auth")
  *                $ref: '#/components/schemas/UserResponse'
  *
  */
-router.get("/",usercontrol.getAllUser)
+router.get("/" , auth ,usercontrol.getUserDetails)
 
 /**
  * @swagger
