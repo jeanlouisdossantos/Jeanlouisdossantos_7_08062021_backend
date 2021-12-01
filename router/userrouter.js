@@ -19,7 +19,7 @@ const auth = require("../middleware/auth")
  *
  */
 router.get("/" , auth ,usercontrol.getUserDetails)
-
+router.put("/",auth, usercontrol.updateUserDetails )
 /**
  * @swagger
  * paths:
