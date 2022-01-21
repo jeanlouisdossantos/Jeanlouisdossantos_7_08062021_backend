@@ -12,7 +12,7 @@ exports.getAllPosts = (req, res, next) => {
 
   Post.findAll({
     include: [
-      { model: like, attributes: ["type"] },
+      { model: like, attributes: ["type","userid"] },
       {
         model: comment,
         include: [
@@ -35,9 +35,10 @@ exports.getAllPosts = (req, res, next) => {
     ],
   })
     .then((posts) => {
-      res.status(200).json(posts);
+    res.status(200).json(posts);
     })
     .catch((error) => {
+      console.log(error)
       res.status(400).json(error);
     });
 };
