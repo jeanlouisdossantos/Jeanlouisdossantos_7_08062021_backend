@@ -88,8 +88,10 @@ app.get(
 
 const userrouter = require("./router/userrouter");
 const postrouter = require("./router/postrouter.js");
+const likerouter = require("./router/likerouter.js");
+
 
 app.use("/api/user", userrouter);
 app.use("/api/post", postrouter);
-
+app.use("/api/like", likerouter)
 module.exports = app;
