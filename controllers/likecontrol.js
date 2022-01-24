@@ -8,20 +8,21 @@ exports.createOneLike = (req, res, next) => {
     return res.status(400).json({ error: "bad request, no req.body" });
   }
   const like = req.body;
-  console.log(like)
+  
   Like.create(like)
     .then(res.status(201).json({ message: "created succesfully" }))
     .catch((error) => res.status(400).json({ message: error }));
 };
 exports.deleteOneLike = (req, res, next) => {
+  console.log(req.body)
   if (!req.body) {
     return res.status(400).json({ error: "bad request, no req.body" });
   }
   const like = req.body;
-
+  console.log(like)
   Like.destroy({
     where: { postid: like.postid, userid: like.userid, type: like.type },
   })
     .then(res.status(200).json({ message: "deleted successfully" }))
-    .catch((error) => res.status(400).json({ message: error }));
+    .catch((error) => {res.status(500).json({ message: error })});
 };
