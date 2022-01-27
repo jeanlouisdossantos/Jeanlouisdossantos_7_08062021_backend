@@ -4,8 +4,8 @@ const likecontrol = require("../controllers/likecontrol")
 const auth = require("../middleware/auth")
 
 
-router.post("/", likecontrol.createOneLike)
-router.delete("/",  likecontrol.deleteOneLike)
+router.post("/",auth, likecontrol.createOneLike)
+router.delete("/", auth,  likecontrol.deleteOneLike)
 
 
 module.exports = router
