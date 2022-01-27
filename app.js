@@ -32,16 +32,32 @@ const options = {
   },
   apis: ["./api-method-docs.js", "./router/userrouter.js", "./router/postrouter.js"],
 };
+/** le code ci dessous ne fonctionne que en local */
+// let sequelize = new Sequelize(
+//   process.env.DB_NAME,
+//   process.env.DB_USERNAME,
+//   process.env.DB_PASS,
+//   {
+//     host: process.env.DB_HOST,
+//     dialect: "mysql",
+//   }
+// );
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASS,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  }
-);
+let sequelize;
+if (process.env.JAWSDB_URL) {
+  sequelize = new Sequelize(process.env.JAWSDB_URL);
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASS,
+    {
+      host: process.env.DB_HOST,
+      dialect: 'mysql',
+      port: 3306,
+    },
+  );
+}
 
 async function initdatabaseconnection() {
   try {
