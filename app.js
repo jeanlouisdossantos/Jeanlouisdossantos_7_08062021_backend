@@ -45,6 +45,7 @@ const options = {
 
 let sequelize;
 if (process.env.JAWSDB_URL) {
+  console.log("connected ti prod")
   sequelize = new Sequelize(process.env.JAWSDB_URL);
 } else {
   sequelize = new Sequelize(
