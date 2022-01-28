@@ -3,17 +3,6 @@ const user = require("./user");
 const comment = require("./commentmodel")
 const like = require("./likemodel")
 
-/** code ci dessous commenté pour mise en prod */
-// const sequelize = new Sequelize(
-//   process.env.DB_NAME,
-//   process.env.DB_USERNAME,
-//   process.env.DB_PASS,
-//   {
-//     host: process.env.DB_HOST,
-//     dialect: "mysql",
-//   }
-// );
-
 let sequelize;
 if (process.env.JAWSDB_URL) {
   console.log("connected ti prod")

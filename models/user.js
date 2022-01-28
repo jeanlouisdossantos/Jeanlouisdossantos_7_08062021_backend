@@ -1,16 +1,22 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const post = require("./postmodel")
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASS,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  }
-);
-
+let sequelize;
+if (process.env.JAWSDB_URL) {
+  console.log("connected ti prod")
+  sequelize = new Sequelize(process.env.JAWSDB_URL);
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASS,
+    {
+      host: process.env.DB_HOST,
+      dialect: 'mysql',
+      port: 3306,
+    },
+  );
+};
 const user = sequelize.define(
   "User",
   {
