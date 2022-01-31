@@ -14,12 +14,12 @@ exports.createOneLike = (req, res, next) => {
     .catch((error) => res.status(400).json({ message: error }));
 };
 exports.deleteOneLike = (req, res, next) => {
-  console.log(req.body)
+  
   if (!req.body) {
     return res.status(400).json({ error: "bad request, no req.body" });
   }
   const like = req.body;
-  console.log(like)
+  
   Like.destroy({
     where: { postid: like.postid, userid: like.userid, type: like.type },
   })

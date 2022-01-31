@@ -38,7 +38,7 @@ exports.getAllPosts = (req, res, next) => {
     res.status(200).json(posts);
     })
     .catch((error) => {
-      console.log(error)
+      
       res.status(400).json(error);
     });
 };
