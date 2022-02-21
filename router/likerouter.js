@@ -6,6 +6,6 @@ const auth = require("../middleware/auth")
 
 router.post("/",auth, likecontrol.createOneLike)
 router.delete("/", auth,  likecontrol.deleteOneLike)
-
+router.get("/:postid", likecontrol.getAllLikes)
 
 module.exports = router
