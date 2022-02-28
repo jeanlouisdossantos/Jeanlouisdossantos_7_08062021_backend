@@ -23,7 +23,7 @@ exports.deleteOneLike = (req, res, next) => {
   })
     .then(res.status(200).json({ message: "deleted successfully" }))
     .catch((error) => {
-      res.status(500).json({ message: error });
+      res.status(500).json({ message: erclearror });
     });
 };
 

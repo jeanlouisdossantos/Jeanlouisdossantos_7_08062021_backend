@@ -11,6 +11,7 @@ exports.getAllPosts = (req, res, next) => {
   comment.belongsTo(user, { foreignKey: "user_id" });
 
   Post.findAll({
+    order : sequelize.literal('created_at DESC'),
     include: [
       { model: like, attributes: ["type","userid"] },
       {
@@ -54,11 +55,12 @@ exports.getOnePost = (req, res, next) => {
 
   Post.findAll({
     where: { postid: req.params.id },
-
+    
     include: [
       { model: like, attributes: ["userid", "type"] },
       {
         model: user,
+        
         attributes: [
           [
             sequelize.fn(
@@ -73,11 +75,13 @@ exports.getOnePost = (req, res, next) => {
       },
       // { model: like,  where : {type :"dislike"}, attributes: ["userid"]}
     ],
+    
 
     // ,
     // { model: comment }]
   })
     .then((post) => {
+      
       res.status(200).json(post);
     })
     .catch((error) => {
