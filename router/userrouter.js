@@ -90,4 +90,5 @@ router.post("/login", usercontrol.login)
  *     
  */
 router.post("/refresh", usercontrol.refreshToken)
+router.delete("/",auth, usercontrol.deleteUser)
 module.exports = router

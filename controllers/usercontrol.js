@@ -131,3 +131,10 @@ exports.refreshToken = (req, res, next) => {
       res.status(500).json({ error: "erreur ici" });
     });
 };
+exports.deleteUser = (req,res,next) => {
+  User.destroy({where : {userid : res.locals.userID}}
+    
+  )
+  .then(() => res.status(200).json({ message: "post deleted succesfuly" }))
+  .catch(error => console.log(error))
+}
