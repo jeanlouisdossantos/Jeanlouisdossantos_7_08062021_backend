@@ -131,7 +131,7 @@ exports.deleteOnePost = (req, res, next) => {
     .then((post) => post.user_id === res.locals.userID)
     .catch((error) => res.status(500).json(error));
 
-  if (authtodelete) {
+  if (authtodelete||res.locals.isAdmin) {
     Post.destroy({ where: { postid: req.params.id } })
       .then(() => res.status(200).json({ message: "post deleted succesfuly" }))
       .catch((error) => res.status(500).json(error));

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 module.exports = (req, res, next) => {
   try {
@@ -8,11 +9,13 @@ module.exports = (req, res, next) => {
     
     if (req.body.userID && req.body.userID !== userId) {
       throw "userid non valable";
-    } else
-  
+    } else{
+  res.locals.isAdmin = User.findOne({ where: { userid: userId } }).then(
+    user => user.isAdmin
+  )
     res.locals.userID = userId
 
-    next();
+    next();}
   } catch (error) {
       res.status(401).json({ error: { error } | "echec authentification" });
   }
